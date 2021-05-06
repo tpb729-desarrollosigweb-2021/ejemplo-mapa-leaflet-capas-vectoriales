@@ -21,11 +21,11 @@ control_capas = L.control.layers(capas_base).addTo(mapa);
 // Control de escala
 L.control.scale().addTo(mapa);
 
-// Capa vectorial en formato GeoJSON
+// Capa vectorial de ASP en formato GeoJSON
 $.getJSON("https://tpb729-desarrollosigweb-2021.github.io/datos/sinac/areas_protegidas-wgs84.geojson", function(geodata) {
   var capa_asp = L.geoJson(geodata, {
     style: function(feature) {
-	  return {'color': "#013220", 'weight': 2.5, 'fillOpacity': 0.0}
+	  return {'color': "#013220", 'weight': 3, 'fillOpacity': 0.0}
     },
     onEachFeature: function(feature, layer) {
       var popupText = "<strong>Área protegida</strong>: " + feature.properties.nombre_asp + "<br>" + "<strong>Categoría</strong>: " + feature.properties.cat_manejo;
@@ -34,4 +34,20 @@ $.getJSON("https://tpb729-desarrollosigweb-2021.github.io/datos/sinac/areas_prot
   }).addTo(mapa);
 
   control_capas.addOverlay(capa_asp, 'Áreas protegidas');
+});	
+
+
+// Capa vectorial de distritos en formato GeoJSON
+$.getJSON("https://tpb729-desarrollosigweb-2021.github.io/datos/ign/distritos-wgs84.geojson", function(geodata) {
+  var capa_distritos = L.geoJson(geodata, {
+    style: function(feature) {
+	  return {'color': "#ff0000", 'weight': 3, 'fillOpacity': 0.0}
+    },
+    onEachFeature: function(feature, layer) {
+      var popupText = "<strong>Distrito</strong>: " + feature.properties.distrito + "<br>" + "<strong>Cantón</strong>: " + feature.properties.canton + "<br>" + "<strong>Provincia</strong>: " + feature.properties.provincia;
+      layer.bindPopup(popupText);
+    }			
+  }).addTo(mapa);
+
+  control_capas.addOverlay(capa_distritos, 'Distritos');
 });	
